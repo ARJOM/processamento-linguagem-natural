@@ -1,3 +1,8 @@
+import nltk
+
+# Faça os downloads dos pacotes comentados abaixo na primeira execução
+# nltk.download('stopwords')
+
 base = [('eu sou admirada por muitos','alegria'),
         ('me sinto completamente amado','alegria'),
         ('amar e maravilhoso','alegria'),
@@ -19,6 +24,25 @@ base = [('eu sou admirada por muitos','alegria'),
         ('eu tenho muito medo dele', 'medo'),
         ('estou com medo do resultado dos meus testes', 'medo')]
 
+# Stop Words são palavras que não agregam siginificado para a emoção dos textos
+
+# Stop Words geradas manualmente
 stopwords = ['a', 'agora', 'algum', 'alguma', 'aquele', 'aqueles', 'de', 'deu', 'do', 'e', 'estou', 'esta', 'esta',
              'ir', 'meu', 'muito', 'mesmo', 'no', 'nossa', 'o', 'outro', 'para', 'que', 'sem', 'talvez', 'tem', 'tendo',
              'tenha', 'teve', 'tive', 'todo', 'um', 'uma', 'umas', 'uns', 'vou']
+
+# Stop Words geradas pelo nltk
+stopwordsnltk = nltk.corpus.stopwords.words('portuguese')
+print(stopwords)
+
+def removeStopWords(texto):
+    frases = []
+    for (palavras, emocao) in texto:
+        semStop = []
+        for p in palavras.split():
+            if p not in stopwordsnltk:
+                semStop.append(p)
+        frases.append((semStop, emocao))
+    return frases
+
+print(removeStopWords(base))
