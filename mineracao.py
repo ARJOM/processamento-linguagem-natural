@@ -2,16 +2,17 @@ import nltk
 
 # Faça os downloads dos pacotes comentados abaixo na primeira execução
 # nltk.download('stopwords')
+# nltk.download('rslp')
 
-base = [('eu sou admirada por muitos','alegria'),
-        ('me sinto completamente amado','alegria'),
-        ('amar e maravilhoso','alegria'),
-        ('estou me sentindo muito animado novamente','alegria'),
-        ('eu estou muito bem hoje','alegria'),
-        ('que belo dia para dirigir um carro novo','alegria'),
-        ('o dia está muito bonito','alegria'),
-        ('estou contente com o resultado do teste que fiz no dia de ontem','alegria'),
-        ('o amor e lindo','alegria'),
+base = [('eu sou admirada por muitos', 'alegria'),
+        ('me sinto completamente amado', 'alegria'),
+        ('amar e maravilhoso', 'alegria'),
+        ('estou me sentindo muito animado novamente', 'alegria'),
+        ('eu estou muito bem hoje', 'alegria'),
+        ('que belo dia para dirigir um carro novo', 'alegria'),
+        ('o dia está muito bonito', 'alegria'),
+        ('estou contente com o resultado do teste que fiz no dia de ontem', 'alegria'),
+        ('o amor e lindo', 'alegria'),
         ('nossa amizade e amor vai durar para sempre', 'alegria'),
         ('estou amedrontado', 'medo'),
         ('ele esta me ameacando a dias', 'medo'),
@@ -35,6 +36,7 @@ stopwords = ['a', 'agora', 'algum', 'alguma', 'aquele', 'aqueles', 'de', 'deu', 
 stopwordsnltk = nltk.corpus.stopwords.words('portuguese')
 print(stopwords)
 
+
 def removeStopWords(texto):
     frases = []
     for (palavras, emocao) in texto:
@@ -45,4 +47,23 @@ def removeStopWords(texto):
         frases.append((semStop, emocao))
     return frases
 
+
 print(removeStopWords(base))
+
+# Ao extrair o radical é possível que se perca um pouco da informação, mas de maneira geral
+def extraiRadical(texto):
+    stemmer = nltk.RSLPStemmer()
+    frasesstemming = []
+    for (palavras, emocao) in texto:
+        comstemming = []
+        for p in palavras.split():
+            if p not in stopwordsnltk:
+                comstemming.append(str(stemmer.stem(p)))
+        frasesstemming.append((comstemming, emocao))
+    return frasesstemming
+
+
+frasesRadical = extraiRadical(base)
+print(frasesRadical)
+
+
