@@ -50,6 +50,7 @@ def removeStopWords(texto):
 
 print(removeStopWords(base))
 
+
 # Ao extrair o radical é possível que se perca um pouco da informação, mas de maneira geral
 def extraiRadical(texto):
     stemmer = nltk.RSLPStemmer()
@@ -67,3 +68,28 @@ frasesRadical = extraiRadical(base)
 print(frasesRadical)
 
 
+def buscaPalavras(frases):
+    todaspalavras = []
+    for (palavras, emocao) in frases:
+        todaspalavras.extend(palavras)
+    return todaspalavras
+
+
+palavras = buscaPalavras(frasesRadical)
+print(palavras)
+
+
+def buscaFrequencia(palavras):
+    return nltk.FreqDist(palavras)
+
+
+frequencia = buscaFrequencia(palavras)
+print(frequencia.most_common(50))
+
+
+def buscaPalavrasUnicas(frequencia):
+    freq = frequencia.keys()
+    return freq
+
+palavrasunicas = buscaPalavrasUnicas(frequencia)
+print(palavrasunicas)
