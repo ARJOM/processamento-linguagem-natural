@@ -1,4 +1,5 @@
 import nltk
+import pickle
 
 # Faça os downloads dos pacotes comentados abaixo na primeira execução
 # nltk.download('stopwords')
@@ -124,6 +125,22 @@ def avaliaFrase(frase, classificador):
     for classe in distribuicao.samples():
         print(classe, distribuicao.prob(classe))
 
+def salvaTreinamento(classificador):
+    try:
+        salva_classificador = open("naivebayes.pickle", "wb")
+        pickle.dump(classificador, salva_classificador)
+        salva_classificador.close()
+        return True
+    except:
+        return False
+
+def recuperaClassificador():
+    classifier_f = open("naivebayes.pickle", "rb")
+    classifier = pickle.load(classifier_f)
+    classifier_f.close()
+    return classifier
+
+
 # função do nltk que aplica as caracteristicas da função passada como parâmetro a uma variável
 basecompleta = nltk.classify.apply_features(extraiPalavras, frasesRadical)
 # print(basecompleta[15])
@@ -133,6 +150,8 @@ classificador = nltk.NaiveBayesClassifier.train(basecompleta)
 # print(classificador.labels())
 # print(classificador.show_most_informative_features(10))
 
-teste = "hoje é um belo dia para amar"
-avaliaFrase(teste, classificador)
+# salvando o treinamento em um arquivo
+salvaTreinamento(classificador)
 
+classe = recuperaClassificador()
+avaliaFrase("eu amo o dia", classe)
