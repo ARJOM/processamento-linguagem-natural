@@ -5,6 +5,7 @@ import nltk
 # nltk.download('rslp')
 
 base = [('eu sou admirada por muitos', 'alegria'),
+        ('eu amo você', 'alegria'),
         ('me sinto completamente amado', 'alegria'),
         ('amar e maravilhoso', 'alegria'),
         ('estou me sentindo muito animado novamente', 'alegria'),
@@ -107,6 +108,22 @@ def extraiPalavras(documento):
 caracteristicasfrase = extraiPalavras(['am', 'nov', 'dia'])
 # print(caracteristicasfrase)
 
+def extraiRadicalFrase(frase):
+    resultado = []
+    stemmer = nltk.RSLPStemmer()
+    for p in frase.split():
+        resultado.append(str(stemmer.stem(p)))
+    return resultado
+
+def avaliaFrase(frase, classificador):
+    processado = extraiRadicalFrase(frase)
+    novo = extraiPalavras(processado)
+
+    print(classificador.classify(novo))
+    distribuicao = classificador.prob_classify(novo)
+    for classe in distribuicao.samples():
+        print(classe, distribuicao.prob(classe))
+
 # função do nltk que aplica as caracteristicas da função passada como parâmetro a uma variável
 basecompleta = nltk.classify.apply_features(extraiPalavras, frasesRadical)
 # print(basecompleta[15])
@@ -114,4 +131,8 @@ basecompleta = nltk.classify.apply_features(extraiPalavras, frasesRadical)
 # montando a tabela de probabilidade
 classificador = nltk.NaiveBayesClassifier.train(basecompleta)
 # print(classificador.labels())
-print(classificador.show_most_informative_features(10))
+# print(classificador.show_most_informative_features(10))
+
+teste = "hoje é um belo dia para amar"
+avaliaFrase(teste, classificador)
+
