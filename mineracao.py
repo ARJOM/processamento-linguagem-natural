@@ -25,7 +25,8 @@ base = [('eu sou admirada por muitos', 'alegria'),
         ('se eles descobrirem estamos encrencados', 'medo'),
         ('estou tremendo de medo', 'medo'),
         ('eu tenho muito medo dele', 'medo'),
-        ('estou com medo do resultado dos meus testes', 'medo')]
+        ('estou com medo do resultado dos meus testes', 'medo'),
+        ('tenho medo do escuro', 'medo')]
 
 # Stop Words são palavras que não agregam siginificado para a emoção dos textos
 
@@ -140,18 +141,16 @@ def recuperaClassificador():
     classifier_f.close()
     return classifier
 
+def treinar():
+    print('treinando')
+    # função do nltk que aplica as caracteristicas da função passada como parâmetro a uma variável
+    basecompleta = nltk.classify.apply_features(extraiPalavras, frasesRadical)
+    # print(basecompleta[15])
 
-# função do nltk que aplica as caracteristicas da função passada como parâmetro a uma variável
-basecompleta = nltk.classify.apply_features(extraiPalavras, frasesRadical)
-# print(basecompleta[15])
+    # montando a tabela de probabilidade
+    classificador = nltk.NaiveBayesClassifier.train(basecompleta)
+    # print(classificador.labels())
+    # print(classificador.show_most_informative_features(10))
 
-# montando a tabela de probabilidade
-classificador = nltk.NaiveBayesClassifier.train(basecompleta)
-# print(classificador.labels())
-# print(classificador.show_most_informative_features(10))
-
-# salvando o treinamento em um arquivo
-salvaTreinamento(classificador)
-
-classe = recuperaClassificador()
-avaliaFrase("eu amo o dia", classe)
+    # salvando o treinamento em um arquivo
+    salvaTreinamento(classificador)
