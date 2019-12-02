@@ -34,7 +34,7 @@ stopwords = ['a', 'agora', 'algum', 'alguma', 'aquele', 'aqueles', 'de', 'deu', 
 
 # Stop Words geradas pelo nltk
 stopwordsnltk = nltk.corpus.stopwords.words('portuguese')
-print(stopwords)
+# print(stopwords)
 
 
 def removeStopWords(texto):
@@ -48,7 +48,7 @@ def removeStopWords(texto):
     return frases
 
 
-print(removeStopWords(base))
+# print(removeStopWords(base))
 
 
 # Ao extrair o radical é possível que se perca um pouco da informação, mas de maneira geral
@@ -65,7 +65,7 @@ def extraiRadical(texto):
 
 
 frasesRadical = extraiRadical(base)
-print(frasesRadical)
+# print(frasesRadical)
 
 
 def buscaPalavras(frases):
@@ -76,7 +76,7 @@ def buscaPalavras(frases):
 
 
 palavras = buscaPalavras(frasesRadical)
-print(palavras)
+# print(palavras)
 
 
 def buscaFrequencia(palavras):
@@ -84,7 +84,7 @@ def buscaFrequencia(palavras):
 
 
 frequencia = buscaFrequencia(palavras)
-print(frequencia.most_common(50))
+# print(frequencia.most_common(50))
 
 
 def buscaPalavrasUnicas(frequencia):
@@ -93,7 +93,7 @@ def buscaPalavrasUnicas(frequencia):
 
 
 palavrasunicas = buscaPalavrasUnicas(frequencia)
-print(palavrasunicas)
+# print(palavrasunicas)
 
 
 def extraiPalavras(documento):
@@ -105,8 +105,13 @@ def extraiPalavras(documento):
 
 
 caracteristicasfrase = extraiPalavras(['am', 'nov', 'dia'])
-print(caracteristicasfrase)
+# print(caracteristicasfrase)
 
 # função do nltk que aplica as caracteristicas da função passada como parâmetro a uma variável
 basecompleta = nltk.classify.apply_features(extraiPalavras, frasesRadical)
-print(basecompleta[15])
+# print(basecompleta[15])
+
+# montando a tabela de probabilidade
+classificador = nltk.NaiveBayesClassifier.train(basecompleta)
+# print(classificador.labels())
+print(classificador.show_most_informative_features(10))
