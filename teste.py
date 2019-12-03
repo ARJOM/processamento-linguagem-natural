@@ -5,7 +5,13 @@ while True:
     if op == 1:
         treinar()
     elif op == 2:
-        classe = recuperaClassificador()
-        avaliaFrase("eu tenho medo de amar", classe)
+        try:
+            classe = recuperaClassificador()
+        except:
+            treinar()
+        finally:
+            classe = recuperaClassificador()
+        frase = str(input("Digite uma frase: "))
+        avaliaFrase(frase, classe)
     elif op == 3:
         break
