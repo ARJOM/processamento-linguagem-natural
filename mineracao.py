@@ -1,4 +1,5 @@
 import nltk
+from nltk.metrics import ConfusionMatrix
 import pickle
 
 # Faça os downloads dos pacotes comentados abaixo na primeira execução
@@ -972,3 +973,14 @@ def testar():
     for (classe, resultado, frase) in erro:
         print(classe, resultado, frase)
 
+    esperado = []
+    previsto = []
+    for (frase, classe) in basecompletateste:
+        resultado = recuperaClassificador().classify(frase)
+        previsto.append(resultado)
+        esperado.append(classe)
+
+    # esperado = "alegria alegria alegria alegria medo medo surpresa surpresa".split()
+    # previsto = "alegria alegira medo surpresa medo medo medo surpresa".split()
+    matriz = ConfusionMatrix(esperado, previsto)
+    print(matriz)
