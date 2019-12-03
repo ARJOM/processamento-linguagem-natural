@@ -852,8 +852,8 @@ def extraiRadical(texto):
     return frasesstemming
 
 
-frasesRadical = extraiRadical(basetreinamento)
-
+frasesRadicalTreinamento = extraiRadical(basetreinamento)
+frasesRadicalTeste = extraiRadical(baseteste)
 
 # print(frasesRadical)
 
@@ -865,7 +865,8 @@ def buscaPalavras(frases):
     return todaspalavras
 
 
-palavras = buscaPalavras(frasesRadical)
+palavrasTreinamento = buscaPalavras(frasesRadicalTreinamento)
+palavrasTeste = buscaPalavras(frasesRadicalTeste)
 
 
 # print(palavras)
@@ -875,7 +876,8 @@ def buscaFrequencia(palavras):
     return nltk.FreqDist(palavras)
 
 
-frequencia = buscaFrequencia(palavras)
+frequenciaTreinamento = buscaFrequencia(palavrasTreinamento)
+frequenciaTeste = buscaFrequencia(palavrasTeste)
 
 
 # print(frequencia.most_common(50))
@@ -886,8 +888,8 @@ def buscaPalavrasUnicas(frequencia):
     return freq
 
 
-palavrasunicas = buscaPalavrasUnicas(frequencia)
-
+palavrasunicastreinamento = buscaPalavrasUnicas(frequenciaTreinamento)
+palavrasunicasteste = buscaPalavrasUnicas(frequenciaTeste)
 
 # print(palavrasunicas)
 
@@ -895,7 +897,7 @@ palavrasunicas = buscaPalavrasUnicas(frequencia)
 def extraiPalavras(documento):
     doc = set(documento)
     caracteristicas = {}
-    for palavra in palavrasunicas:
+    for palavra in palavrasunicastreinamento:
         caracteristicas['%s' % palavra] = palavra in doc
     return caracteristicas
 
@@ -943,7 +945,7 @@ def recuperaClassificador():
 def treinar():
     print('treinando')
     # função do nltk que aplica as caracteristicas da função passada como parâmetro a uma variável
-    basecompleta = nltk.classify.apply_features(extraiPalavras, frasesRadical)
+    basecompleta = nltk.classify.apply_features(extraiPalavras, frasesRadicalTreinamento)
     # print(basecompleta[15])
 
     # montando a tabela de probabilidade
@@ -953,3 +955,12 @@ def treinar():
 
     # salvando o treinamento em um arquivo
     salvaTreinamento(classificador)
+
+def testar():
+    print('testando')
+    # função do nltk que aplica as caracteristicas da função passada como parâmetro a uma variável
+    basecompletateste = nltk.classify.apply_features(extraiPalavras, frasesRadicalTeste)
+    # Valor de precisão do algoritimo atual
+    print(nltk.classify.accuracy(recuperaClassificador(), basecompletateste))
+    # O quão bom representa essa precisão depende do cenário e do número de classes trabalhadas
+
