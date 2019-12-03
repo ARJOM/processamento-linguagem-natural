@@ -963,4 +963,12 @@ def testar():
     # Valor de precisão do algoritimo atual
     print(nltk.classify.accuracy(recuperaClassificador(), basecompletateste))
     # O quão bom representa essa precisão depende do cenário e do número de classes trabalhadas
+    erro = []
+    for (frase, classe) in basecompletateste:
+        resultado = recuperaClassificador().classify(frase)
+        if resultado != classe:
+            erro.append((classe, resultado, frase))
+
+    for (classe, resultado, frase) in erro:
+        print(classe, resultado, frase)
 
